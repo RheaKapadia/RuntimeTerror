@@ -9,17 +9,27 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <header>
-        <nav>
-            <a href="{{ url_for('index') }}"> Home</a> ||
-            <a href="{{ url_for('get_notes') }}">My Notes</a> ||
-            <a href="{{ url_for('new_post') }}">Add Post</a>
-        </nav>
+        <h1>Runtime Terror <h5 id="username">{{user.name}}</h5></h1>
     </header>
     <body>
+        <div id="welcome">
+            <h1>Welcome to Runtime Terror</h1>
+            <h3>Share your thoughts and questions with the world!</h3>
+        </div>
+        <div>
+            <nav>
+<!--                <a href="{{ url_for('index') }}"> Home</a> ||-->
+<!--                <a href="{{ url_for('get_posts') }}">My Posts</a> ||-->
+<!--                <a href="{{ url_for('new_post') }}">Add Post</a>-->
+<!--                <a href="{{ url_for('new_post') }}">Create Poll</a>-->
+                    <a>Home</a>
+            </nav>
+        </div>
+
 
         <h1>Welcome {{user.name}} to Runtime Terror!</h1>
 
-        <h3>Posts</h3>
+        <h3>Feed</h3>
 
 
     </body>
