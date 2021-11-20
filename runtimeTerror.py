@@ -11,7 +11,7 @@ from database import db
 from models import User as User
 
 app = Flask(__name__)  # create an app
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///runtime_terror_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
@@ -30,14 +30,14 @@ def index():
 
 
 # @app.route('/notes')
-# def get_notes():
+# def get_posts():
 #     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu')
 #     my_notes = db.session.query(Post).all()
 #     return render_template('notes.html', notes=my_notes, user=a_user)
 #
 #
 # @app.route('/notes/<note_id>')
-# def get_note(note_id):
+# def get_post(note_id):
 #
 #     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
 #     my_note = db.session.query(Post).filter_by(id=note_id).one()
