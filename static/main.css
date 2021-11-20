@@ -1,14 +1,49 @@
-header {
-    background: grey;
-}
 body {
-    padding: 30px 30px;
-    }
-h1{
-    color:black;
+    padding: 100px;
+    width: 100%;
 }
-h2{
-    color:black;
-    background:light blue;
+
+header {
+    background: black;
+
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 5em;
+    left: 0px;
 }
+
+#headerTitle {
+    float: left;
+    color: white;
+
+}
+
+#headerUsername {
+    float: right;
+    color: white;
+}
+
+#welcome {
+    text-align: center;
+}
+#welcome h1 {
+    font-size: 50px;
+}
+
+nav {
+    padding-top: 50px;
+
+}
+
+nav h1 {
+    font-size: 35px;
+}
+
+nav a {
+    float: right;
+    color: black;
+    font-size: 20px;
+}
+
 
