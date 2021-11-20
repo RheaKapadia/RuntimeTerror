@@ -7,7 +7,7 @@ from flask import render_template
 from flask import request
 from flask import redirect, url_for
 from database import db
-# from models import Post as Post
+from models import Post as Post
 from models import User as User
 
 app = Flask(__name__)  # create an app
@@ -29,47 +29,47 @@ def index():
     return render_template('index.html', user=a_user)
 
 
-# @app.route('/notes')
-# def get_posts():
-#     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu')
-#     my_notes = db.session.query(Post).all()
-#     return render_template('notes.html', notes=my_notes, user=a_user)
-#
-#
-# @app.route('/notes/<note_id>')
-# def get_post(note_id):
-#
-#     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-#     my_note = db.session.query(Post).filter_by(id=note_id).one()
-#     return render_template('note.html', note=my_note, user=a_user)
-#
-#
-# @app.route('/notes/new', methods=['GET', 'POST'])
-# def new_note():
-#
-#     # check method used for request
-#     if request.method == 'POST':
-#         # create title data
-#         title = request.form['title']
-#
-#         # get note data
-#         text = request.form['noteText']
-#
-#         # create date stamp
-#         from datetime import date
-#         today = date.today()
-#
-#         # format date mm/dd/yyyy
-#         today = today.strftime('%m-%d-%Y')
-#         new_record = Post(title, text, today)
-#         db.session.add(new_record)
-#         db.session.commit()
-#
-#         return redirect(url_for('get_notes'))
-#
-#     else:
-#         a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-#         return render_template('new.html', user=a_user)
+@app.route('/index')
+def get_posts():
+    a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu')
+    my_posts = db.session.query(Post).all()
+    return render_template('index.html', posts=my_posts, user=a_user)
+
+
+@app.route('/posts/<post_id>')
+def get_post(post_id):
+
+    a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
+    my_post = db.session.query(Post).filter_by(id=post_id).one()
+    return render_template('note.html', posts=my_post, user=a_user)
+
+
+@app.route('/posts/new', methods=['GET', 'POST'])
+def new_post():
+
+    # check method used for request
+    if request.method == 'POST':
+        # create title data
+        title = request.form['title']
+
+        # get post data
+        text = request.form['postText']
+
+        # create date stamp
+        from datetime import date
+        today = date.today()
+
+        # format date mm/dd/yyyy
+        today = today.strftime('%m-%d-%Y')
+        new_record = Post(title, text, today)
+        db.session.add(new_record)
+        db.session.commit()
+
+        return redirect(url_for('get_posts'))
+
+    else:
+        a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
+        return render_template('new.html', user=a_user)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
