@@ -71,6 +71,16 @@ def new_post():
         return render_template('newPost.html', user=a_user)
 
 
+@app.route("/posts/delete/<post_id>", methods=['POST'])
+def delete_post(post_id):
+    # retrieve post from database
+    my_post = db.session.query(Post).filter_by(id=post_id).one()
+    db.session.delete(my_post)
+    db.session.commit()
+
+    return redirect(url_for('get_posts'))
+
+
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
 
 # To see the web page in your web browser, go to the url,

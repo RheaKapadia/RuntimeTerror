@@ -18,7 +18,7 @@
         </div>
         <div>
             <nav>
-                <h1>Recent Posts</h1>
+
                 <a href="{{ url_for('index') }}"> Home</a>   ||
                 <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
                 <a href="{{ url_for('get_posts') }}">  View Posts</a>  ||
@@ -26,18 +26,25 @@
             </nav>
         </div>
         <div>
+            <h1>Recent Posts</h1>
             <table>
                  <tr>
-                    <th>Title</th>
-                    <th>Date</th>
+                     <th>Username</th>
+                     <th>Title</th>
+                     <th>Question</th>
                  </tr>
                  {% for post in posts %}
                  <tr>
-                     <td>{{ user.name }}</td>
-                     <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.title }}</a></td>
-                     <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.text }}</a></td>
-<!--                     <td>{{ post.date }}</td>-->
-
+                     <div class="postPreview">
+                         <td>{{ user.name }}</td>
+                         <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.title }}</a></td>
+                         <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.text }}</a></td>
+                          <td>
+                                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                                    <input type="submit" value="Delete">
+                                </form>
+                          </td>
+                     </div>
                  </tr>
                  {% endfor %}
             </table>
