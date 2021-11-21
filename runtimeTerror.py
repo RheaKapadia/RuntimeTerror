@@ -17,7 +17,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 # Setup models
 with app.app_context():
-    db.create_all()   # run under the app context
+    db.create_all()  # run under the app context
+
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
@@ -29,24 +30,22 @@ def index():
     return render_template('index.html', user=a_user)
 
 
-@app.route('/index')
+@app.route('/posts')
 def get_posts():
-    a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu')
+    a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
     my_posts = db.session.query(Post).all()
-    return render_template('index.html', posts=my_posts, user=a_user)
+    return render_template('posts.html', posts=my_posts, user=a_user)
 
 
 @app.route('/posts/<post_id>')
 def get_post(post_id):
-
     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
     my_post = db.session.query(Post).filter_by(id=post_id).one()
-    return render_template('note.html', posts=my_post, user=a_user)
+    return render_template('post.html', posts=my_post, user=a_user)
 
 
-@app.route('/posts/new', methods=['GET', 'POST'])
+@app.route('/new', methods=['GET', 'POST'])
 def new_post():
-
     # check method used for request
     if request.method == 'POST':
         # create title data
@@ -69,7 +68,7 @@ def new_post():
 
     else:
         a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-        return render_template('new.html', user=a_user)
+        return render_template('newPost.html', user=a_user)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
