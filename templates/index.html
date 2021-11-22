@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="UNCC Notes App">
+        <title>UNCC Notes App</title>
+        <!-- styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <header>
+        <p><h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername">{{user.name}}</h4></p>
+    </header>
+    <body>
+        <div id="welcome" class="center">
+            <h1>Welcome {{user.name}} to Runtime Terror</h1>
+            <h3>Share your thoughts and questions with the world!</h3>
+        </div>
+        <div>
+            <nav>
+
+                <a href="{{ url_for('index') }}"> Home</a>   ||
+                <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
+                <a href="{{ url_for('get_posts') }}">  View Posts</a>  ||
+                <a href="">  Create Poll</a>
+            </nav>
+        </div>
+        <div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="UNCC Notes App">
+        <title>UNCC Notes App</title>
+        <!-- styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <header>
+        <p><h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername">{{user.name}}</h4></p>
+    </header>
+    <body>
+        <div id="welcome" class="center">
+            <h1>Welcome {{user.name}} to Runtime Terror</h1>
+            <h3>Share your thoughts and questions with the world!</h3>
+        </div>
+        <div>
+            <nav>
+                <h1>Recent Posts</h1>
+                <a href="{{ url_for('index') }}"> Home</a>   ||
+                <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
+                <a href="">  Create Poll</a>
+            </nav>
+        </div>
+        <div>
+            <table>
+                 <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                 </tr>
+                 {% for post in posts %}
+                    <tr>
+                        <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.title }}</a></td>
+                        <td>{{ post.date }}</td>
+
+                    </tr>
+                 {% endfor %}
+            </table>
+        </div>
+        <div>
+<!--I've added the new post here as a placeholder till the newPost html is created-->
+            <form action="new" method="post">
+                <p><label>Title </label></p><p>  <input type="text" name="title"/></p>
+                <p><label>Question </label></p><p><textarea name="postText"  rows="6" cols="0" >Add your question here ...</textarea></p>
+                <p><input type="submit" value="Add Post"/></p>
+            </form>
+
+        </div>
+
+
+    </body>
+</html>
