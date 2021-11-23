@@ -41,7 +41,7 @@ def get_posts():
 def get_post(post_id):
     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
     my_post = db.session.query(Post).filter_by(id=post_id).one()
-    return render_template('post.html', posts=my_post, user=a_user)
+    return render_template('post.html', post=my_post, user=a_user)
 
 
 @app.route('/new', methods=['GET', 'POST'])
