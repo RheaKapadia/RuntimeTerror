@@ -106,7 +106,7 @@ def update_post(post_id):
         # retrieve note from database
         my_post = db.session.query(Post).filter_by(id=post_id).one()
 
-    return render_template('new.html', post=my_post, user=a_user)
+    return render_template('newPost.html', post=my_post, user=a_user)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
