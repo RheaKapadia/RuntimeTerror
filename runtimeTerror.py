@@ -41,7 +41,7 @@ def get_posts():
 def get_post(post_id):
     a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
     my_post = db.session.query(Post).filter_by(id=post_id).one()
-    return render_template('post.html', posts=my_post, user=a_user)
+    return render_template('post.html', post=my_post, user=a_user)
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -79,6 +79,34 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(url_for('get_posts'))
+
+
+@app.route('/posts/edit/<post_id>', methods=['GET', 'POST'])
+def update_post(post_id):
+    # check method used for request
+    if request.method == 'POST':
+        # get title data
+        title = request.form['title']
+        # get post data
+        text = request.form['postText']
+        post = db.session.query(Post).filter_by(id=post_id).one()
+        # update post data
+        post.title = title
+        post.text = text
+        # update post in DB
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('get_posts'))
+    else:
+        # GET request= show new post form to edit post
+        # Retrieve user from database
+        a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
+
+        # retrieve note from database
+        my_post = db.session.query(Post).filter_by(id=post_id).one()
+
+    return render_template('newPost.html', post=my_post, user=a_user)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)

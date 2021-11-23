@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <header>
-        <p><h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername">{{user.name}}</h4></p>
+        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a>  {{user.name}}</h4>
     </header>
     <body>
         <div id="welcome" class="center">
@@ -18,37 +18,46 @@
         </div>
         <div>
             <nav>
-                <h1>Recent Posts</h1>
-                <a href="{{ url_for('index') }}"> Home</a>   ||
                 <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
+                <a href="{{ url_for('get_posts') }}">  View Posts</a>  ||
                 <a href="">  Create Poll</a>
             </nav>
         </div>
-        <div>
-            <table>
-                 <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                 </tr>
-                 {% for post in posts %}
-                    <tr>
-                        <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.title }}</a></td>
-                        <td>{{ post.date }}</td>
+<!--        <div>-->
 
-                    </tr>
-                 {% endfor %}
-            </table>
-        </div>
-        <div>
-<!--I've added the new post here as a placeholder till the newPost html is created-->
+<!--            <form action="new" method="post">-->
+<!--                <p><label>Title </label></p><p>  <input type="text" name="title"/></p>-->
+<!--                <p><label>Question </label></p><p><textarea name="postText"  rows="6" cols="0" >Add your question here ...</textarea></p>-->
+<!--                <p><input type="submit" value="Add Post"/></p>-->
+<!--            </form>-->
+
+<!--        </div>-->
+        {% if post %}
+            <form action="{{ url_for('update_post', post_id=post.id) }}" method="post">
+        {% else %}
             <form action="new" method="post">
-                <p><label>Title </label></p><p>  <input type="text" name="title"/></p>
-                <p><label>Question </label></p><p><textarea name="postText"  rows="6" cols="0" >Add your question here ...</textarea></p>
-                <p><input type="submit" value="Add Post"/></p>
+        {% endif %}
+                <p><label>Title </label></p>
+                <p><input type="text" name="title" value="{% if post %}{{post.title}} {% endif %}"/></p>
+                <p><label>Post </label></p>
+                <p>
+                    <textarea name="postText"  rows="6" cols="0">
+                        {% if post %}
+                            {{post.text}}
+                        {% else %}
+                            Add your new question here ...
+                        {% endif %}
+                     </textarea>
+                </p>
+                <p>
+                    {% if post %}
+                        <input type="submit" value="Update Post"/>
+                    {% else %}
+                        <input type="submit" value="Add Post"/>
+                    {% endif %}
+                </p>
             </form>
-
-        </div>
-
+            </form>
 
     </body>
 </html>
