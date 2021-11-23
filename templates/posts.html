@@ -44,6 +44,7 @@
                                     <input type="submit" value="Delete">
                                 </form>
                           </td>
+                         <td><a href="{{ url_for('update_post', post_id=post.id) }}">Edit</a></td>
                      </div>
                  </tr>
                  {% endfor %}
