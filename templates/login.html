@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
 </head>
+    <header>
+        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a></h4>
+    </header>
     <body>
         <div>
              <nav>
@@ -14,10 +17,10 @@
                 <a href="">  Create Poll</a>
             </nav>
         </div>
-
-        <h1>Welcome {% if user %}{{user}}{% endif %}to the 49er Notes App!</h1>
-
-        <h2>Use this site to maintain and organize your notes.</h2>
+        <div id="welcome">
+            <h1>Welcome {% if user %}{{user}}{% endif %} to Runtime Terror</h1>
+            <h3>Share your thoughts and questions with the world!</h3>
+        </div>
         <div class="formwrapper">
             <h2 class="title">Login</h2>
             <form method="POST" action="/login">
@@ -38,6 +41,7 @@
                         {% endfor %}
                     </ul>
                     {% endif %}
+                    <br><a href="{{ url_for('register') }}">Not a user?</a>
                 </div>
                 {{ form.submit }}
             </form>

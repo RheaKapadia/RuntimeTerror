@@ -9,11 +9,11 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <header>
-        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a>  {{user.name}}</h4>
+        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a>{% if user %}{{user}}{% endif %}</h4>
     </header>
     <body>
-        <div id="welcome" class="center">
-            <h1>Welcome {{user.name}} to Runtime Terror</h1>
+        <div id="welcome">
+            <h1>Welcome {% if user %}{{user}}{% endif %} to Runtime Terror</h1>
             <h3>Share your thoughts and questions with the world!</h3>
         </div>
         <div>
