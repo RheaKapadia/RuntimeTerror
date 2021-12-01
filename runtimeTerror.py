@@ -9,10 +9,10 @@ from flask import redirect, url_for
 from database import db
 from models import Post as Post
 from models import User as User
-from forms import RegisterForm
+from models import Comment as Comment
 import bcrypt
 from flask import session
-from forms import LoginForm
+from forms import RegisterForm, LoginForm, CommentForm
 
 app = Flask(__name__)  # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///runtime_terror_app.db'
@@ -75,9 +75,17 @@ def get_posts():
 
 @app.route('/posts/<post_id>')
 def get_post(post_id):
-    a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-    my_post = db.session.query(Post).filter_by(id=post_id).one()
-    return render_template('post.html', post=my_post, user=a_user)
+    # check if a user is saved in session
+    if session.get('user'):
+        # retrieve posts from database
+        my_post = db.session.query(Post).filter_by(id=post_id, user_id=session['user_id']).one()
+
+        # create a comment form object
+        form = CommentForm()
+
+        return render_template('post.html', post=my_post, user=session['user'], form=form)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -215,6 +223,23 @@ def reply_post(post_id):
         # user is not in session redirect to login
         return redirect(url_for('login'))
 
+
+@app.route('/posts/<post_id>/comment', methods=['POST'])
+def new_comment(post_id):
+    if session.get('user'):
+        comment_form = CommentForm()
+        # validate_on_submit only validates using POST
+        if comment_form.validate_on_submit():
+            # get comment data
+            comment_text = request.form['comment']
+            new_record = Comment(comment_text, int(post_id), session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+
+        return redirect(url_for('get_post', post_id=post_id))
+
+    else:
+        return redirect(url_for('login'))
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
