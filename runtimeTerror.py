@@ -61,6 +61,16 @@ def login():
         # form did not validate or GET request
         return render_template("login.html", form=login_form)
 
+
+@app.route('/logout')
+def logout():
+    # check if a user is saved in session
+    if session.get('user'):
+        session.clear()
+
+    return redirect(url_for('index'))
+
+
 @app.route('/posts')
 def get_posts():
     # check if a user is saved in session
@@ -192,36 +202,36 @@ def register():
     return render_template('register.html', form=form)
 
 
-@app.route('/posts/reply/<post_id>', methods=['GET', 'POST'])
-def reply_post(post_id):
-    if session.get('user'):
-        # check method used for request
-        if request.method == 'POST':
-            # get title data
-            title = request.form['title']
-            # get post data
-            text = request.form['postText']
-            post = db.session.query(Post).filter_by(id=post_id).one()
-            # update post data
-            post.title = title
-            post.text = text
-            # update post in DB
-            db.session.add(post)
-            db.session.commit()
-
-            return redirect(url_for('get_post'))
-        else:
-            # GET request= show new post form to edit post
-            # Retrieve user from database
-            a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-
-            # retrieve post from database
-            my_post = db.session.query(Post).filter_by(id=post_id).one()
-
-        return render_template('reply.html', post=my_post, user=session['user'])
-    else:
-        # user is not in session redirect to login
-        return redirect(url_for('login'))
+# @app.route('/posts/reply/<post_id>', methods=['GET', 'POST'])
+# def reply_post(post_id):
+#     if session.get('user'):
+#         # check method used for request
+#         if request.method == 'POST':
+#             # get title data
+#             title = request.form['title']
+#             # get post data
+#             text = request.form['postText']
+#             post = db.session.query(Post).filter_by(id=post_id).one()
+#             # update post data
+#             post.title = title
+#             post.text = text
+#             # update post in DB
+#             db.session.add(post)
+#             db.session.commit()
+#
+#             return redirect(url_for('get_post'))
+#         else:
+#             # GET request= show new post form to edit post
+#             # Retrieve user from database
+#             a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
+#
+#             # retrieve post from database
+#             my_post = db.session.query(Post).filter_by(id=post_id).one()
+#
+#         return render_template('reply.html', post=my_post, user=session['user'])
+#     else:
+#         # user is not in session redirect to login
+#         return redirect(url_for('login'))
 
 
 @app.route('/posts/<post_id>/comment', methods=['POST'])

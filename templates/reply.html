@@ -9,17 +9,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <header>
-        <h1 id="headerTitle">Runtime Terror </h1>
-        <h4 id="headerUsername">
-            {% if user %}
-                    <a href="{{ url_for('logout') }}" class="headerInfo">Logout</a>
-            {% else %}
-                    <a href="{{ url_for('login') }}"  class="headerInfo">Sign In</a>
-                    <a href="{{ url_for('register') }}" class="headerInfo">Register</a>
-            {% endif %}
-            <a href="{{ url_for('index') }}" class="headerInfo">&nbsp;&nbsp;&nbsp; Home</a>
-            {% if user %}{{user}}{% endif %}
-        </h4>
+        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a>{% if user %}{{user}}{% endif %}</h4>
     </header>
     <body>
         <div id="welcome">
@@ -33,12 +23,23 @@
                 <a href="">  Create Poll</a>
             </nav>
         </div>
-        <div id="viewFeed">
+        <h1>Post</h1>
 
-            <h1>VIEW YOUR <br>POSTS NOW</h1>
-            <a href="{{ url_for('get_posts') }}" class="button">View Now</a>
-            <h4>See what others have to say about <br>your posts!</h4>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Text</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.text }}</td>
+                <td>{{ post.date }}</td>
+            </tr>
+            <tr>
+                <td><b>Reply</b></td>
+                <td><textarea name="replyText"  rows="5" cols="20">Enter your response here...</textarea></td>
+                <td><input type="submit" value="Add Reply"/></td>
+            </tr>
+        </table>
 
-        </div>
-    </body>
-</html>

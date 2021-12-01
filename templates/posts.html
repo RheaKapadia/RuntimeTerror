@@ -9,8 +9,14 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <header>
-        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a>{% if user %}{{user}}{% endif %}</h4>
-    </header>
+   <header>
+        <h1 id="headerTitle">Runtime Terror </h1>
+        <h4 id="headerUsername">
+            <a href="{{ url_for('logout') }}" class="headerInfo">Logout</a>
+            <a href="{{ url_for('index') }}" class="headerInfo">&nbsp;&nbsp;&nbsp; Home</a>
+            {% if user %}{{user}}{% endif %}
+        </h4>
+    </header>    </header>
     <body>
         <div id="welcome">
             <h1>Welcome {% if user %}{{user}}{% endif %} to Runtime Terror</h1>

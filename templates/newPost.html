@@ -9,7 +9,12 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <header>
-        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a>{% if user %}{{user}}{% endif %}</h4>
+        <h1 id="headerTitle">Runtime Terror </h1>
+        <h4 id="headerUsername">
+            <a href="{{ url_for('logout') }}" class="headerInfo">Logout</a>
+            <a href="{{ url_for('index') }}" class="headerInfo">&nbsp;&nbsp;&nbsp; Home</a>
+            {% if user %}{{user}}{% endif %}
+        </h4>
     </header>
     <body>
         <div id="welcome">
@@ -23,15 +28,7 @@
                 <a href="">  Create Poll</a>
             </nav>
         </div>
-<!--        <div>-->
 
-<!--            <form action="new" method="post">-->
-<!--                <p><label>Title </label></p><p>  <input type="text" name="title"/></p>-->
-<!--                <p><label>Question </label></p><p><textarea name="postText"  rows="6" cols="0" >Add your question here ...</textarea></p>-->
-<!--                <p><input type="submit" value="Add Post"/></p>-->
-<!--            </form>-->
-
-<!--        </div>-->
         {% if post %}
             <form action="{{ url_for('update_post', post_id=post.id) }}" method="post">
         {% else %}
