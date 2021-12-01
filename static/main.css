@@ -29,7 +29,7 @@ header {
     color: white;
 }
 
-#headerHome {
+.headerInfo {
     padding-right: 50px;
     float: right;
     color: white;
@@ -57,6 +57,7 @@ nav a {
 
     color: black;
     font-size: 20px;
+    text-decoration: none;
 }
 
 #viewFeed {

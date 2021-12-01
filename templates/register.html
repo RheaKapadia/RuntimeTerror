@@ -7,20 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
 </head>
     <header>
-        <h1 id="headerTitle">Runtime Terror </h1><h4 id="headerUsername"><a href="{{ url_for('index') }}" id="headerHome">&nbsp;&nbsp;&nbsp; Home</a></h4>
+        <h1 id="headerTitle">Runtime Terror </h1>
+        <h4 id="headerUsername">
+            <a href="{{ url_for('index') }}" class="headerInfo">&nbsp;&nbsp;&nbsp; Home</a>
+        </h4>
     </header>
     <body>
-        <div>
-             <nav>
-                <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
-                <a href="{{ url_for('get_posts') }}">  View Posts</a>  ||
-                <a href="">  Create Poll</a>
-            </nav>
-        </div>
         <div id="welcome">
             <h1>Welcome {% if user %}{{user}}{% endif %} to Runtime Terror</h1>
             <h3>Share your thoughts and questions with the world!</h3>
-        </div>
+        </div><br>
         <div class="formwrapper">
             <h2 class="title">Register</h2>
             <form method="POST" action="/register">
@@ -68,6 +64,7 @@
                         {% endfor %}
                     </ul>
                     {% endif %}
+                    <br><a href="{{ url_for('login') }}">Already a user?</a>
                 </div>
                 {{ form.submit }}
             </form>
