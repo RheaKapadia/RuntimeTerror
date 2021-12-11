@@ -24,13 +24,14 @@
         </div>
         <div>
              <nav>
-                <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
-                <a href="{{ url_for('get_posts') }}">  View Posts</a>  ||
+                 <h1>Recent Posts</h1>
+                <a href="{{ url_for('new_post') }}">  Create Post</a>
+                <a href="{{ url_for('get_posts') }}">  My Posts</a>
                 <a href="">  Create Poll</a>
             </nav>
         </div>
-        <div>
-            <h1>Recent Posts</h1>
+        <div class="content">
+
             <table>
                  <tr>
                      <th>Username</th>

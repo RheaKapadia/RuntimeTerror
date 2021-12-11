@@ -17,28 +17,41 @@
                     <a href="{{ url_for('login') }}"  class="headerInfo">Sign In</a>
                     <a href="{{ url_for('register') }}" class="headerInfo">Register</a>
             {% endif %}
+
             <a href="{{ url_for('index') }}" class="headerInfo">&nbsp;&nbsp;&nbsp; Home</a>
-            {% if user %}{{user}}{% endif %}
+            {% if user %}{{currentuser}}{% endif %}
         </h4>
     </header>
     <body>
         <div id="welcome">
-            <h1>Welcome {% if user %}{{user}}{% endif %} to Runtime Terror</h1>
+            <h1>Welcome {% if user %}{{currentuser}}{% endif %} to Runtime Terror</h1>
             <h3>Share your thoughts and questions with the world!</h3>
         </div>
         <div>
             <nav>
-                <a href="{{ url_for('new_post') }}">  Create Post</a>  ||
-                <a href="{{ url_for('get_posts') }}">  View Posts</a>  ||
+                <h1 id="feedTitle">Feed</h1>
+                <a href="{{ url_for('new_post') }}">  Create Post</a>
+                <a href="{{ url_for('get_posts') }}">  My Posts</a>
                 <a href="">  Create Poll</a>
             </nav>
         </div>
-        <div id="viewFeed">
-
-            <h1>VIEW YOUR <br>POSTS NOW</h1>
-            <a href="{{ url_for('get_posts') }}" class="button">View Now</a>
-            <h4>See what others have to say about <br>your posts!</h4>
-
+        <div class="viewFeed">
+            <table>
+                 <tr>
+                     <th>Username</th>
+                     <th>Title</th>
+                     <th>Question</th>
+                 </tr>
+                 {% for post in posts %}
+                 <tr>
+                     <div class="postPreview">
+                         <td>{{ user }}</td>
+                         <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.title }}</a></td>
+                         <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.text }}</a></td>
+                     </div>
+                 </tr>
+                {% endfor %}
+            </table>
         </div>
     </body>
 </html>

@@ -9,13 +9,15 @@ class Post(db.Model):
     date = db.Column("date", db.String(50))
     # can create a foreign key; referencing the id  variable in the User class, so that is why its lowercase u
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    comments = db.relationship("Comment", backref='note', cascade="all, delete-orphan", lazy=True)
+    comments = db.relationship("Comment", backref='post', cascade="all, delete-orphan", lazy=True)
+    likes = db.Column("likes", db.Integer, nullable=True)
 
-    def __init__(self, title, text, date, user_id):
+    def __init__(self, title, text, date, user_id, likes):
         self.title = title
         self.text = text
         self.date = date
         self.user_id = user_id
+        self.likes = likes
 
 
 class User(db.Model):
@@ -40,7 +42,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.VARCHAR, nullable=False)
-    note_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __init__(self, content, post_id, user_id):
