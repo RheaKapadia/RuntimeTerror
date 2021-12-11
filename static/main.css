@@ -29,7 +29,7 @@ header {
     color: white;
 }
 
-#headerHome {
+.headerInfo {
     padding-right: 50px;
     float: right;
     color: white;
@@ -45,52 +45,57 @@ header {
 }
 
 nav {
-    padding-top: 50px;
+    display: block;
+    position: flex;
+    width: 100%;
+    height: 5em;
+    padding-top: 100px;
 
 }
 
 nav h1 {
-    font-size: 35px;
-}
-
-nav a {
-
-    color: black;
-    font-size: 20px;
-}
-
-#viewFeed {
-    background: #30343b;
-    height: 60vh;
-}
-
-#viewFeed h1 {
-    color: white;
-    text-align: left;
-    padding: 175px 0 0  250px;
-    font-family: 'Varela Round', sans-serif;
+    display: inline-block;
+    float: left;
+    padding-left: 100px;
     font-size: 55px;
 }
 
-#viewFeed h4 {
-    color: white;
+nav a {
+    display: inline-block;
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+    float: right;
+    padding: 60px 50px 0 0;
+}
+
+.viewFeed {
+    padding-top: 250px;
+
+
+
+    position: relative;
+    height: relative;
+    width: 87.5vw;
+    margin: auto;
+    background: #ebf0f7;
+
+    display: flex;
+	border-radius: 30px;
+}
+
+.viewFeed table {
+
     text-align: left;
-    padding: 0 0 0  250px;
-    font-family: 'Varela Round', sans-serif;
+    padding: -100px 0 0  50px;
     font-size: 20px;
 }
 
-.button {
- font-family: 'Varela Round', sans-serif;
-  font: bold;
-  font-size: 55px;
-  text-decoration: none;
-  background-color: #30343b;
-  padding: 0 0 0 1000px;
-  color: white;
-  border-radius: 20px;
-  border-color: white;
-  border-width: 5px;
+.content {
+    padding-top: 100px;
+    padding-left: 100px;
 }
+
+
 
 

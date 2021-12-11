@@ -9,10 +9,10 @@ from flask import redirect, url_for
 from database import db
 from models import Post as Post
 from models import User as User
-from forms import RegisterForm
+from models import Comment as Comment
 import bcrypt
 from flask import session
-from forms import LoginForm
+from forms import RegisterForm, LoginForm, CommentForm
 
 app = Flask(__name__)  # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///runtime_terror_app.db'
@@ -33,8 +33,14 @@ with app.app_context():
 def index():
     # check if a  user is saved in session
     if session.get('user'):
-        return render_template('index.html', user=session['user'])
-    return render_template('index.html')
+        # retrieve posts from database
+        posts = db.session.query(Post).all()
+
+        currentuser = session['user']
+        # return render_template('index.html', posts=posts, user=user, currentuser=currentuser)
+        return render_template('index.html', posts=posts, user=session['user'])
+    else:
+        return render_template('login.html')
 
 
 @app.route('/')
@@ -61,6 +67,16 @@ def login():
         # form did not validate or GET request
         return render_template("login.html", form=login_form)
 
+
+@app.route('/logout')
+def logout():
+    # check if a user is saved in session
+    if session.get('user'):
+        session.clear()
+
+    return redirect(url_for('login'))
+
+
 @app.route('/posts')
 def get_posts():
     # check if a user is saved in session
@@ -75,9 +91,17 @@ def get_posts():
 
 @app.route('/posts/<post_id>')
 def get_post(post_id):
-    a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-    my_post = db.session.query(Post).filter_by(id=post_id).one()
-    return render_template('post.html', post=my_post, user=a_user)
+    # check if a user is saved in session
+    if session.get('user'):
+        # retrieve posts from database
+        my_post = db.session.query(Post).filter_by(id=post_id, user_id=session['user_id']).one()
+
+        # create a comment form object
+        form = CommentForm()
+
+        return render_template('post.html', post=my_post, user=session['user'], form=form, likes=my_post.likes)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -95,9 +119,11 @@ def new_post():
             from datetime import date
             today = date.today()
 
+            likes = 0
+
             # format date mm/dd/yyyy
             today = today.strftime('%m-%d-%Y')
-            new_record = Post(title, text, today, session['user_id'])
+            new_record = Post(title, text, today, session['user_id'], likes)
             db.session.add(new_record)
             db.session.commit()
 
@@ -146,9 +172,6 @@ def update_post(post_id):
             return redirect(url_for('get_posts'))
         else:
             # GET request= show new post form to edit post
-            # Retrieve user from database
-            a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
-
             # retrieve post from database
             my_post = db.session.query(Post).filter_by(id=post_id).one()
 
@@ -184,37 +207,73 @@ def register():
     return render_template('register.html', form=form)
 
 
-@app.route('/posts/reply/<post_id>', methods=['GET', 'POST'])
-def reply_post(post_id):
+@app.route('/posts/<post_id>/comment', methods=['POST'])
+def new_comment(post_id):
     if session.get('user'):
-        # check method used for request
-        if request.method == 'POST':
-            # get title data
-            title = request.form['title']
-            # get post data
-            text = request.form['postText']
-            post = db.session.query(Post).filter_by(id=post_id).one()
-            # update post data
-            post.title = title
-            post.text = text
-            # update post in DB
-            db.session.add(post)
+        comment_form = CommentForm()
+        # validate_on_submit only validates using POST
+        if comment_form.validate_on_submit():
+            # get comment data
+            comment_text = request.form['comment']
+            new_record = Comment(comment_text, int(post_id), session['user_id'])
+            db.session.add(new_record)
             db.session.commit()
 
-            return redirect(url_for('get_post'))
-        else:
-            # GET request= show new post form to edit post
-            # Retrieve user from database
-            a_user = db.session.query(User).filter_by(email='rkapadia@uncc.edu').one()
+        return redirect(url_for('get_post', post_id=post_id))
 
-            # retrieve post from database
-            my_post = db.session.query(Post).filter_by(id=post_id).one()
+    else:
+        return redirect(url_for('login'))
 
-        return render_template('reply.html', post=my_post, user=session['user'])
+
+@app.route('/posts/<post_id>', methods=['GET', 'POST'])
+def like_post(post_id):
+    if session.get('user'):
+
+        post = db.session.query(Post).filter_by(id=post_id).one()
+        # update post data
+        post.likes += 1
+        # likes = post.likes + 1
+        # post.likes = likes
+
+        # update post in DB
+        # db.session.add(post)
+        # db.session.merge(post)
+        db.session.commit()
+
+        return redirect(url_for('get_post', post_id=post_id))
     else:
         # user is not in session redirect to login
         return redirect(url_for('login'))
-
+#
+# @app.route('/newPoll', methods=['GET', 'POST'])
+# def new_poll():
+#     if session.get('user'):
+#         # check method used for request
+#         if request.method == 'POST':
+#             # create title data
+#             title = request.form['title']
+#
+#             # get post data
+#             text = request.form['postText']
+#
+#             # create date stamp
+#             from datetime import date
+#             today = date.today()
+#
+#             # format date mm/dd/yyyy
+#             today = today.strftime('%m-%d-%Y')
+#             new_record = Post(title, text, today, session['user_id'])
+#             db.session.add(new_record)
+#             db.session.commit()
+#
+#             return redirect(url_for('get_posts'))
+#         else:
+#             # GET request - show new post form
+#             return render_template('newPost.html', user=session['user'])
+#
+#     else:
+#         # user is not in session redirect ot login
+#         return redirect(url_for('login'))
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
